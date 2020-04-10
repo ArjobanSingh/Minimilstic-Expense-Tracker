@@ -30,7 +30,7 @@ export default class UserInfo extends Component
                 savedName : this.state.nameInput,
                 nameInput: ''
             },
-            () => console.log("printing saved name: ",this.state.savedName)
+            () => this.props.setUserName(this.state.savedName, this.props.userNumber)
             )
             
             return;
@@ -45,13 +45,24 @@ export default class UserInfo extends Component
             savedName: '',
             expenses: [],
             newExpense: '',
+        },
+        () => {
+            this.props.reset(this.props.userNumber)
         })
     }
 
     setExpense = (exp) => {
         this.setState({
             newExpense: exp
+        },)
+    }
+
+    getTotal = () => {
+        let total = 0;
+        this.state.expenses.map((item) => {
+            total += parseFloat(item);
         })
+        return total;
     }
 
     saveExpense = () => {
@@ -64,7 +75,9 @@ export default class UserInfo extends Component
                     newExpense: ''
                 })
             },
-            () => console.log("printing saved expense: ",this.state.expenses.length)
+            () => {
+                this.props.setTotal(this.getTotal(), this.props.userNumber)
+            }
             )
             
             return;
